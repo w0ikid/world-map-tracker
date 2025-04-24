@@ -1,0 +1,40 @@
+/* src/app/components/world-map/world-map.component.scss */
+
+/* Контейнер для карты */
+#chartdiv {
+    width: 100%;
+    height: 600px; /* Можно уменьшить или увеличить по своему усмотрению */
+    border-radius: 8px; /* Для скруглённых углов */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+    background-color: #f9f9f9; /* Лёгкий серый фон */
+  }
+  
+  /* Для подсказок */
+  .am5map-tooltip {
+    background-color: rgba(0, 0, 0, 0.7); /* Тёмный фон с прозрачностью */
+    color: #fff; /* Белый текст */
+    font-size: 12px; /* Умеренный размер текста */
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  /* Наведение на страну */
+  .am5map-mapPolygon:hover {
+    transition: transform 0.3s ease-in-out, fill 0.3s ease-in-out;
+    transform: scale(1.05); /* Лёгкое увеличение */
+  }
+  
+  /* Стиль для подсвеченных стран */
+  .visited {
+    fill: #4caf50; /* Зелёный */
+  }
+  
+  .wishlist {
+    fill: #ffeb3b; /* Жёлтый */
+  }
+  
+  /* Стиль для подсвеченных стран */
+.none {
+    fill: #dcdcdc; /* Серый цвет для "не хочу" */
+  }
+  
