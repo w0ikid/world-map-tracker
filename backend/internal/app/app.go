@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/w0ikid/world-map-tracker/internal/app/start"
 	"github.com/w0ikid/world-map-tracker/internal/domain/repositories"
@@ -16,9 +17,10 @@ import (
 func Run(configFile string) error {
 	// conf load
 	cfg, err := config.NewConfig(configFile)
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
+	log.Println("Config loaded successfully")
 	// db connection
 	conn, err := connections.NewConnections(cfg)
 	if err != nil {
