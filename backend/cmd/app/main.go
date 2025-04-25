@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"log"
-	"os"
+	_"os"
 	"github.com/joho/godotenv"
 	"github.com/w0ikid/world-map-tracker/internal/app"
 )
