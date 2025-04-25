@@ -16,7 +16,7 @@ import (
 
 func Run(configFile string) error {
 	// conf load
-	cfg, err := config.NewConfig(configFile)
+	cfg, _ := config.NewConfig(configFile)
 	// if err != nil {
 	// 	return err
 	// }
