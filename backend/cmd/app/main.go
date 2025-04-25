@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"os"
 	"github.com/joho/godotenv"
 	"github.com/w0ikid/world-map-tracker/internal/app"
 )
@@ -12,10 +13,15 @@ func main() {
 	configFile := flag.String("config", "configs/.env", "Path to configuration file")
 	flag.Parse()
 
-	// Load .env file
-	err := godotenv.Load(*configFile)
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+	// Try to load .env only if file exists
+	if _, err := os.Stat(*configFile); err == nil {
+		if err := godotenv.Load(*configFile); err != nil {
+			log.Printf("Warning: error loading .env file: %v", err)
+		} else {
+			log.Println(".env file loaded")
+		}
+	} else {
+		log.Println("No .env file found, using environment variables")
 	}
 
 	if err := app.Run(*configFile); err != nil {
