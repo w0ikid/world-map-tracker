@@ -1,0 +1,59 @@
+<div class="register-container">
+    <h2>Регистрация</h2>
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-group">
+        <label for="username">Имя пользователя</label>
+        <input
+          id="username"
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          #usernameCtrl="ngModel"
+          required
+          minlength="3"
+          placeholder="Введите имя пользователя"
+        />
+        <div *ngIf="usernameCtrl.invalid && (usernameCtrl.dirty || usernameCtrl.touched)" class="error">
+          <div *ngIf="usernameCtrl.errors?.['required']">Имя пользователя обязательно.</div>
+          <div *ngIf="usernameCtrl.errors?.['minlength']">Имя пользователя должно содержать минимум 3 символа.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          #emailCtrl="ngModel"
+          required
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          placeholder="Введите email"
+        />
+        <div *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)" class="error">
+          <div *ngIf="emailCtrl.errors?.['required']">Email обязателен.</div>
+          <div *ngIf="emailCtrl.errors?.['pattern']">Введите корректный email.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          #passwordCtrl="ngModel"
+          required
+          minlength="8"
+          placeholder="Введите пароль"
+        />
+        <div *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)" class="error">
+          <div *ngIf="passwordCtrl.errors?.['required']">Пароль обязателен.</div>
+          <div *ngIf="passwordCtrl.errors?.['minlength']">Пароль должен содержать минимум 8 символов.</div>
+        </div>
+      </div>
+      <button type="submit" [disabled]="registerForm.invalid">Зарегистрироваться</button>
+      <p *ngIf="errorMessage" class="error server-error">{{ errorMessage }}</p>
+    </form>
+    <p>Уже есть аккаунт? <a routerLink="/login">Войти</a></p>
+  </div>

@@ -1,0 +1,178 @@
+/* header.component.css */
+:root {
+    --primary: #2c5f93;  /* Deep ocean blue */
+    --secondary: #4b9860; /* Forest green */
+    --accent: #e67e22;    /* Compass/marker orange */
+    --light: #f4f7fa;     /* Cloud white */
+    --dark: #2c3e50;      /* Night sky */
+  }
+  
+  .world-map-header {
+    background: linear-gradient(to right, var(--primary), #3a6ea5);
+    color: white;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 64px;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .logo a:hover {
+    color: var(--accent);
+  }
+  
+  .compass-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0 18c4.411 0 8-3.589 8-8s-3.589-8-8-8-8 3.589-8 8 3.589 8 8 8zm3.707-11.707l-5.293 2.293-2.293 5.293 5.293-2.293 2.293-5.293zm-3.707 2.293c-.276 0-.5-.224-.5-.5s.224-.5.5-.5.5.224.5.5-.224.5-.5.5z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .main-nav li {
+    margin: 0 5px;
+  }
+  
+  .main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .main-nav a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+  }
+  
+  .user-menu {
+    position: relative;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .user-info:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .username {
+    margin-right: 6px;
+    font-weight: 500;
+  }
+  
+  .chevron-icon {
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+  }
+  
+  .chevron-icon.open {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    margin-top: 8px;
+    overflow: hidden;
+    z-index: 1001;
+  }
+  
+  .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: 20px;
+    width: 8px;
+    height: 8px;
+    background: white;
+    transform: rotate(45deg);
+  }
+  
+  .dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--dark);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-menu a:hover {
+    background-color: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Для мобильных устройств */
+  @media (max-width: 768px) {
+    .main-nav {
+      display: none; /* На мобильных скрываем навигацию */
+    }
+    
+    .container {
+      padding: 0 10px;
+    }
+    
+    .username {
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }

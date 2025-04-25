@@ -1,0 +1,32 @@
+<!-- header.component.html -->
+<header class="world-map-header" *ngIf="isLoggedIn">
+    <div class="container">
+      <div class="logo">
+        <a routerLink="/dashboard">
+          <span class="compass-icon"></span>
+          <span>World Map Tracker</span>
+        </a>
+      </div>
+      
+      <nav class="main-nav">
+        <ul>
+          <li><a routerLink="/dashboard" routerLinkActive="active">Карта</a></li>
+          <li><a routerLink="/locations" routerLinkActive="active">Локации</a></li>
+          <li><a routerLink="/trips" routerLinkActive="active">Путешествия</a></li>
+          <li><a routerLink="/statistics" routerLinkActive="active">Статистика</a></li>
+        </ul>
+      </nav>
+      
+      <div class="user-menu" (clickOutside)="closeDropdown()">
+        <div class="user-info" (click)="toggleDropdown()">
+          <span class="username">{{ userData?.username || 'Пользователь' }}</span>
+          <span class="chevron-icon" [class.open]="showDropdown"></span>
+        </div>
+        <div class="dropdown-menu" *ngIf="showDropdown">
+          <a routerLink="/profile">Профиль</a>
+          <a routerLink="/settings">Настройки</a>
+          <a href="#" (click)="$event.preventDefault(); logout()">Выйти</a>
+        </div>
+      </div>
+    </div>
+  </header>

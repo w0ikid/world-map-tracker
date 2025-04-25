@@ -1,0 +1,4 @@
+.content-wrapper {
+    padding-top: 64px; /* Высота header */
+    min-height: calc(100vh - 64px);
+  }
