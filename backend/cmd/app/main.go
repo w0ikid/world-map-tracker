@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
@@ -16,10 +15,8 @@ func main() {
     
     db :=os.Getenv("USERdb")
 
-    fmt.Println("Starting application...")
-    fmt.Println("DB name:", name)
-    fmt.Println("DB user:", db)
-
+    log.Println("DBnamedb:", name)
+    log.Println("USERdb:", db)
     // Define config file path
     configFile := flag.String("config", "configs/.env", "Path to configuration file")
     flag.Parse()
