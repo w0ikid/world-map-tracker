@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface UserProfile {
+  id: number;
+  username: string;
+  email: string;
+  created_at: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,8 +25,8 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/register`, { username, email, password }, { withCredentials: true });
   }
 
-  profile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/users/profile`, { withCredentials: true });
+  profile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/users/profile`, { withCredentials: true });
   }
 
   logout(): Observable<any> {

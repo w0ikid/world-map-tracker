@@ -3,70 +3,70 @@ import { AuthService } from '../auth.service'; // Adjust path as needed
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-
+import { CountryStatusService } from '../country-status.service';
+import { UserProfile } from '../auth.service'; // Adjust path as needed
+import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 @Component({
-  imports: [CommonModule, FormsModule],
   selector: 'app-profile',
-  template: `
-    <div *ngIf="profileData; else loading">
-      <h2>Profile</h2>
-      <p><strong>Username:</strong> {{ profileData.username }}</p>
-      <button (click)="logout()">Logout</button>
-    </div>
-    <ng-template #loading>
-      <p>Loading profile...</p>
-    </ng-template>
-  `,
-  styles: [`
-    div {
-      padding: 20px;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    button {
-      padding: 8px 16px;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #c82333;
-    }
-  `]
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
-  profileData: any = null;
+export class ProfileComponent implements OnInit, OnDestroy {
+  profileData: UserProfile | null = null;
+  visitedPercentage: number = 0;
+  visitedCount: number = 0;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private countryStatusService: CountryStatusService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.authService.profile().subscribe({
-      next: (data) => {
-        this.profileData = data;
-      },
-      error: (err) => {
-        console.error('Profile fetch error:', err);
-        // Redirect to login if unauthorized (e.g., session expired)
-        if (err.status === 401) {
-          this.router.navigate(['/login']);
+    this.subscriptions.push(
+      this.authService.profile().subscribe({
+        next: (data) => {
+          this.profileData = data;
+        },
+        error: (err) => {
+          console.error('Profile fetch error:', err);
+          if (err.status === 401) {
+            this.router.navigate(['/login']);
+          }
         }
-      }
-    });
+      })
+    );
+
+    this.subscriptions.push(
+      this.countryStatusService.getVisitedPercentage().subscribe({
+        next: (visitedData) => {
+          this.visitedPercentage = visitedData.visited_percentage;
+        },
+        error: (err) => {
+          console.error('Ошибка получения процента посещения стран:', err);
+        }
+      })
+    );
+
+    this.subscriptions.push(
+      this.countryStatusService.getVisitedCount().subscribe({
+        next: (countData) => {
+          this.visitedCount = countData.visited_count;
+        },
+        error: (err) => {
+          console.error('Ошибка получения количества посещенных стран:', err);
+        }
+      })
+    );
   }
 
-  logout(): void {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Logout error:', err);
-        // Even if logout fails, redirect to login
-        this.router.navigate(['/login']);
-      }
-    });
+  ngOnDestroy(): void {
+    // Отписываемся от всех подписок
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

@@ -1,1 +1,25 @@
-<p>profile works!</p>
+<!-- profile.component.html -->
+
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>Profile</h2>
+  </div>
+
+  <div class="profile-info">
+    <h3>User Information</h3>
+    <p><strong>Username:</strong> {{ profileData?.username }}</p>
+    <p><strong>Email:</strong> {{ profileData?.email }}</p>
+    <p><strong>Created At:</strong> {{ profileData?.created_at | date }}</p>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-box">
+      <h4>Visited Percentage</h4>
+      <p>{{ visitedPercentage }}%</p>
+    </div>
+    <div class="stat-box">
+      <h4>Visited Countries</h4>
+      <p>{{ visitedCount }}</p>
+    </div>
+  </div>
+</div>
