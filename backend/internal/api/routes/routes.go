@@ -8,8 +8,9 @@ import (
 	"github.com/w0ikid/world-map-tracker/internal/domain/usecase"
 )
 
-func SetupRoutes(router *gin.Engine, cfg *config.Config, UserUseCase *usecase.UserUseCase) {
-	userHandler := handlers.NewUserHandler(UserUseCase)
+func SetupRoutes(router *gin.Engine, cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusUseCase *usecase.CountryStatusesUseCase) {
+	userHandler := handlers.NewUserHandler(userUseCase)
+	countryStatus := handlers.NewCountryStatusesHandler(countryStatusUseCase)
 
 	authMiddleware := middlewares.AuthMiddleware()
 
@@ -25,7 +26,17 @@ func SetupRoutes(router *gin.Engine, cfg *config.Config, UserUseCase *usecase.Us
 		users.Use(authMiddleware)
 		{
 			users.GET("/profile", userHandler.Profile)
+			users.GET("/:username", userHandler.UserByUsername)
 		}
-
+		countries := api.Group("/countries")
+		countries.Use(authMiddleware)
+		{
+			countries.POST("/", countryStatus.CreateCountryStatus)
+			countries.GET("/", countryStatus.GetCountryStatuses)
+			countries.PUT("/", countryStatus.UpdateCountryStatus)
+			countries.DELETE("/", countryStatus.DeleteCountryStatus)
+			countries.GET("/visited-percentage", countryStatus.GetVisitedPercentage)
+			countries.GET("/visited-count", countryStatus.GetVisitedCount)
+		}
 	}
 }

@@ -101,5 +101,26 @@ func (h *UserHandler) Profile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"id":       user.ID,
 		"username": user.Username,
+		"email":    user.Email,
+		"created_at": user.CreatedAt,		
+	})
+}
+
+func (h *UserHandler) UserByUsername(c *gin.Context) {
+	username := c.Param("username")
+
+	ctx := c.Request.Context()
+
+	user, err := h.usecase.GetUserByUsername(ctx, username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":       user.ID,
+		"username": user.Username,
+		"email":    user.Email,
+		"created_at": user.CreatedAt,
 	})
 }

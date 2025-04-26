@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"context"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/w0ikid/world-map-tracker/internal/domain/models"
 )
 
@@ -16,10 +16,10 @@ type UserRepositoryInterface interface {
 }
 
 type UserRepository struct {
-	db *pgx.Conn
+	db *pgxpool.Pool
 }
 
-func NewUserRepository(db *pgx.Conn) UserRepositoryInterface {
+func NewUserRepository(db *pgxpool.Pool) UserRepositoryInterface {
 	return &UserRepository{db: db}
 }
 

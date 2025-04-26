@@ -29,7 +29,7 @@ func Run(configFile string) error {
 		return err
 	}
 	defer conn.Close()
-
+	
 	log.Println("DB connection established successfully")
 
 	// auto migration
@@ -42,14 +42,14 @@ func Run(configFile string) error {
 	}
 	
 	userRepo := repositories.NewUserRepository(conn.DB)
-
+	countryStatus := repositories.NewCountryStatusesRepository(conn.DB)
 
 	userService := services.NewUserService(userRepo)
-
+	countryStatusesService := services.NewCountryStatusesService(countryStatus)
 
 	userUseCase := usecase.NewUserUseCase(userService)
-
-	start.HTTP(cfg, userUseCase)
+	countryStatusesUseCase := usecase.NewCountryStatusesUseCase(countryStatusesService)
+	start.HTTP(cfg, userUseCase, countryStatusesUseCase)
 	
 	return nil
 }

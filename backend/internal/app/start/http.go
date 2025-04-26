@@ -17,7 +17,7 @@ import (
 	"github.com/w0ikid/world-map-tracker/internal/api/routes"
 )
 
-func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase) {
+func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusesUseCase *usecase.CountryStatusesUseCase) {
 	router := gin.Default()
 
 	store := cookie.NewStore([]byte("secret"))
@@ -40,7 +40,7 @@ func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase) {
 		MaxAge: 12 * time.Hour,
 	}))
 
-	routes.SetupRoutes(router, cfg, userUseCase)
+	routes.SetupRoutes(router, cfg, userUseCase, countryStatusesUseCase)
 
 
 	srv := &http.Server{
