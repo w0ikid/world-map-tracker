@@ -3,12 +3,16 @@ package main
 import (
 	"flag"
 	"log"
-	_"os"
+	"os"
 	"github.com/joho/godotenv"
 	"github.com/w0ikid/world-map-tracker/internal/app"
 )
 
 func main() {
+
+    os.Getenv("DBnamedb")
+    os.Getenv("USERdb")
+
     // Define config file path
     configFile := flag.String("config", "configs/.env", "Path to configuration file")
     flag.Parse()
