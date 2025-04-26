@@ -1,8 +1,10 @@
 package connections
 
 import (
-	"fmt"
 	"context"
+	"fmt"
+	"log"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/w0ikid/world-map-tracker/internal/app/config"
 )
@@ -17,6 +19,8 @@ func (c *Connections) Close() {
 }
 
 func NewConnections(cfg *config.Config) (*Connections, error) {
+	log.Println("Connecting to database...")
+	log.Println("DB connection string:", cfg.DB.GetDBConnString())
 	conn, err := pgx.Connect(context.Background(), cfg.DB.GetDBConnString())
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)

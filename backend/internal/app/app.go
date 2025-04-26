@@ -16,17 +16,21 @@ import (
 
 func Run(configFile string) error {
 	// conf load
-	cfg, _ := config.NewConfig(configFile)
-	// if err != nil {
-	// 	return err
-	// }
+	cfg, err := config.NewConfig(configFile)
+	if err != nil {
+		return err
+	}
 	log.Println("Config loaded successfully")
 	// db connection
+
+
 	conn, err := connections.NewConnections(cfg)
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
+
+	log.Println("DB connection established successfully")
 
 	// auto migration
 	if err := migrations.AutoMigrate(conn.DB); err != nil {

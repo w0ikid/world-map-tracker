@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/joho/godotenv"
 	"github.com/caarlos0/env/v6"
+	"log"
 )
 
 type Config struct {
@@ -32,16 +33,24 @@ type JWTConfig struct {
 }
 
 func NewConfig(filenames ...string) (*Config, error) {
+	
+	log.Println("Config file loaded: 1", filenames)
+
 	if len(filenames) > 0 && filenames[0] != "" {
+		log.Println("Loading config file:", filenames[0])
 		if err := godotenv.Load(filenames...); err != nil {
 			return nil, err
 		}
 	}
+	
+	log.Println("Config file loaded: 2", filenames)
 
 	cfg := &Config{}
 	if err := env.Parse(cfg); err != nil {
 		return nil, err
 	}
+
+	log.Println("Config loaded successfully")
 
 	return cfg, nil
 }
