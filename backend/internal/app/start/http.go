@@ -27,6 +27,7 @@ func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusesU
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true, // Set to true since you're using HTTPS
+		MaxAge:  3600, // 1 hourg
 	})
 
 	router.Use(sessions.Sessions("session", store))
