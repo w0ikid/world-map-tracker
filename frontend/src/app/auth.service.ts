@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable,BehaviorSubject } from 'rxjs';
-
+import { environment } from '../environments/environment';
 export interface UserProfile {
   id: number;
   username: string;
@@ -13,7 +13,7 @@ export interface UserProfile {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:1488/api';
+  private apiUrl = environment.apiUrl;
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   private userDataSubject = new BehaviorSubject<UserProfile | null>(null);
   constructor(private http: HttpClient) {}
