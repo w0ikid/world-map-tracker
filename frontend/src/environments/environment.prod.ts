@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:1488/api'
+    apiUrl: 'https://world-map-tracker.onrender.com/api'
 };
