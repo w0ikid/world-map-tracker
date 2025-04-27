@@ -3,13 +3,17 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5map from '@amcharts/amcharts5/map';
 import am5geodata_world from '@amcharts/amcharts5-geodata/worldLow';
 import { CountryStatusService } from '../country-status.service';
-import { AuthService } from '../auth.service'; // Импортируйте AuthService
+import { AuthService } from '../auth.service';
+import { AiService } from '../ai.service';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { marked } from 'marked';
+
 @Component({
   selector: 'app-world-map',
   imports: [CommonModule],
   templateUrl: './world-map.component.html',
-  styleUrl: './world-map.component.css'
+  styleUrls: ['./world-map.component.css']
 })
 export class WorldMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartdiv', { static: true }) chartdiv!: ElementRef<HTMLDivElement>;
@@ -18,16 +22,19 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
 
   private root!: am5.Root;
   private polygonSeries!: am5map.MapPolygonSeries;
-  selectedCountry: string | null = null;
-  isAuthenticated: boolean = false; // Для отслеживания статуса аутентификации
+  selectedCountryISO: string | null = null;
+  selectedCountryName: string | null = null;
+  countryInfo: SafeHtml = '';
+  isAuthenticated: boolean = false;
 
   constructor(
     private countryStatusService: CountryStatusService,
-    private authService: AuthService
+    private authService: AuthService,
+    private aiService: AiService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngAfterViewInit(): void {
-    // Проверка аутентификации
     this.authService.profile().subscribe({
       next: () => {
         this.isAuthenticated = true;
@@ -36,7 +43,7 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
       },
       error: () => {
         this.isAuthenticated = false;
-        this.initMap(); // Карта может быть показана, но без данных
+        this.initMap();
       }
     });
   }
@@ -78,10 +85,15 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
     });
 
     this.polygonSeries.mapPolygons.template.events.on('click', (ev) => {
-      const id = (ev.target.dataItem?.dataContext as any).id;
+      const dataContext = ev.target.dataItem?.dataContext as any;
+      const id = dataContext?.id;
+      const name = dataContext?.name;
+
       if (id && this.isAuthenticated) {
-        this.selectedCountry = id;
+        this.selectedCountryISO = id;
+        this.selectedCountryName = name;
         this.countryClicked.emit(id);
+        this.countryInfo = '';
       }
     });
   }
@@ -92,16 +104,46 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
     this.countryStatusService.getCountryStatuses().subscribe({
       next: (statuses) => {
         this.countriesStatus = statuses;
-        this.polygonSeries?.data.setAll(this.polygonSeries.data.values);
+        if (this.polygonSeries) {
+           this.polygonSeries.data.setAll(this.polygonSeries.data.values);
+        }
       },
       error: (err) => console.error('Failed to load country statuses:', err)
     });
   }
 
+  private async fetchCountryInfo(countryName: string): Promise<void> {
+    this.aiService.ask(`Расскажи о стране ${countryName} 500 символов макс и дай ссылку на википедию. Пиши сразу не надо вот вам и т д`).subscribe({
+      next: async (response) => {
+        try {
+          const htmlContent = await marked(response.answer);
+          console.log('Полученный HTML:', htmlContent);
+          this.countryInfo = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+        } catch (error) {
+          console.error('Ошибка при обработке Markdown:', error);
+          this.countryInfo = this.sanitizer.bypassSecurityTrustHtml('<p>Не удалось получить информацию о стране из-за ошибки форматирования.</p>');
+        }
+      },
+      error: (err) => {
+        console.error('Ошибка при запросе информации о стране:', err);
+        this.countryInfo = this.sanitizer.bypassSecurityTrustHtml('<p>Не удалось получить информацию о стране.</p>');
+      }
+    });
+  }
+
+  onAskCountryInfo(): void {
+    if (this.selectedCountryName) {
+      this.fetchCountryInfo(this.selectedCountryName);
+    }
+  }
+
   setStatus(status: 'visited' | 'wishlist' | 'none'): void {
-    if (this.selectedCountry && this.isAuthenticated) {
-      this.updateCountryStatus(this.selectedCountry, status);
-      this.selectedCountry = null;
+
+    if (this.selectedCountryISO && this.isAuthenticated) {
+      this.updateCountryStatus(this.selectedCountryISO, status);
+      this.selectedCountryISO = null;
+      this.selectedCountryName = null;
+      this.countryInfo = '';
     }
   }
 
@@ -110,6 +152,12 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
       next: () => this.loadCountryStatuses(),
       error: (err) => console.error('Failed to update country status:', err)
     });
+  }
+
+  closeModal(): void {
+    this.selectedCountryISO = null; // Скрыть модальное окно
+    this.selectedCountryName = null;
+    this.countryInfo = '';
   }
 
   ngOnDestroy(): void {

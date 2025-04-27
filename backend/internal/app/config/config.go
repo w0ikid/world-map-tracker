@@ -32,6 +32,10 @@ type JWTConfig struct {
 	// RefreshExpiresHours int    `env:"REFRESH_EXPIRED_HOURS" envDefault:"168"`           // refresh token lifetime (7 дней)
 }
 
+type GroqAPIConfig struct {
+	APIKey string `env:"GROQ_API_KEY" envDefault:""`
+}
+
 func NewConfig(filenames ...string) (*Config, error) {
 	
 	log.Println("Config file loaded: 1", filenames)
@@ -63,4 +67,8 @@ func (c *DBConfig) GetDBConnString() string {
 		" password=" + c.Password +
 		" dbname=" + c.DBName +
 		" sslmode=" + c.SSLMode
+}
+
+func (c *GroqAPIConfig) GetGroqAPIKey() string {
+	return c.APIKey
 }

@@ -1,46 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
   userData: any = null;
-  showDropdown: boolean = false;
-
+  isMenuOpen: boolean = false;
   constructor(
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.checkLoginStatus();
-  }
-
-  checkLoginStatus(): void {
-    this.authService.profile().subscribe({
-      next: (response) => {
-        this.isLoggedIn = true;
-        this.userData = response;
-      },
-      error: () => {
-        this.isLoggedIn = false;
-        this.userData = null;
-      }
+    this.authService.checkLoginStatus();
+    
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
     });
-  }
 
-  toggleDropdown(): void {
-    this.showDropdown = !this.showDropdown;
-  }
-
-  closeDropdown(): void {
-    this.showDropdown = false;
+    // Подписка на изменения данных пользователя
+    this.authService.userData$.subscribe(userData => {
+      this.userData = userData;
+    });
   }
 
   logout(): void {
@@ -54,5 +42,9 @@ export class HeaderComponent implements OnInit {
         console.error('Ошибка при выходе из системы:', error);
       }
     });
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

@@ -1,32 +1,70 @@
-<!-- header.component.html -->
-<header class="world-map-header" *ngIf="isLoggedIn">
-    <div class="container">
+<header class="world-map-header">
+  <div class="container nav-container">
       <div class="logo">
-        <a routerLink="/dashboard">
-          <span class="compass-icon"></span>
-          <span>World Map Tracker</span>
-        </a>
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #4CAF50, #64B5F6); display: flex; justify-content: center; align-items: center;">
+              <span>🌎</span>
+          </div>
+          <a routerLink="/about"> <span>World Map Tracker</span>
+          </a>
       </div>
-      
-      <nav class="main-nav">
-        <ul>
-          <li><a routerLink="/dashboard" routerLinkActive="active">Карта</a></li>
-          <li><a routerLink="/locations" routerLinkActive="active">Локации</a></li>
-          <li><a routerLink="/trips" routerLinkActive="active">Путешествия</a></li>
-          <li><a routerLink="/statistics" routerLinkActive="active">Статистика</a></li>
-        </ul>
+
+      <nav class="desktop-menu">
+          <ul>
+              <li><a routerLink="/worldmap" routerLinkActive="active">Карта</a></li>
+              <!-- <li><a routerLink="/locations" routerLinkActive="active">Локации</a></li> -->
+              <li><a routerLink="/trips" routerLinkActive="active">Путешествия</a></li>
+              <li><a routerLink="/statistics" routerLinkActive="active">Статистика</a></li>
+              <li><a routerLink="/contacts" routerLinkActive="active">Контакты</a></li>
+          </ul>
       </nav>
-      
-      <div class="user-menu" (clickOutside)="closeDropdown()">
-        <div class="user-info" (click)="toggleDropdown()">
-          <span class="username">{{ userData?.username || 'Пользователь' }}</span>
-          <span class="chevron-icon" [class.open]="showDropdown"></span>
-        </div>
-        <div class="dropdown-menu" *ngIf="showDropdown">
-          <a routerLink="/profile">Профиль</a>
-          <a routerLink="/settings">Настройки</a>
-          <a href="#" (click)="$event.preventDefault(); logout()">Выйти</a>
-        </div>
+
+      <div class="auth-area">
+          <div class="auth-buttons" *ngIf="!isLoggedIn">
+              <a routerLink="/login" class="auth-btn login-btn">Войти</a>
+              <a routerLink="/register" class="auth-btn register-btn">Регистрация</a>
+          </div>
+
+          <div class="user-dropdown" *ngIf="isLoggedIn">
+              <div class="user-avatar">{{ userData?.username ? userData.username.charAt(0) : '?' }}</div>
+              <div class="dropdown-menu">
+                  <ul>
+                      <li><a routerLink="/profile">Мой профиль</a></li>
+                      <!-- <li><a routerLink="/settings">Настройки</a></li> <li class="dropdown-divider"></li> -->
+                      <li><a href="javascript:void(0)" (click)="logout()">Выйти</a></li>
+                  </ul>
+              </div>
+          </div>
       </div>
-    </div>
-  </header>
+
+
+      <button class="mobile-menu-button" (click)="toggleMenu()">☰</button>
+
+      <div class="mobile-menu" [class.active]="isMenuOpen">
+          <button class="close-menu-btn" (click)="toggleMenu()">✕</button>
+          <nav>
+              <ul>
+                  <li><a routerLink="/worldmap" routerLinkActive="active" (click)="toggleMenu()">Карта</a></li>
+                  <li><a routerLink="/locations" routerLinkActive="active" (click)="toggleMenu()">Локации</a></li>
+                  <li><a routerLink="/trips" routerLinkActive="active" (click)="toggleMenu()">Путешествия</a></li>
+                  <li><a routerLink="/statistics" routerLinkActive="active" (click)="toggleMenu()">Статистика</a></li>
+              </ul>
+          </nav>
+           <div class="auth-buttons mobile-auth-buttons" *ngIf="!isLoggedIn">
+              <a routerLink="/login" class="auth-btn login-btn" (click)="toggleMenu()">Войти</a>
+              <a routerLink="/register" class="auth-btn register-btn" (click)="toggleMenu()">Регистрация</a>
+          </div>
+
+          <div class="user-dropdown mobile-user-dropdown" *ngIf="isLoggedIn">
+               <div class="user-avatar">{{ userData?.username ? userData.username.charAt(0) : '?' }}</div>
+                <div class="dropdown-menu">
+                  <ul>
+                      <li><a routerLink="/profile" (click)="toggleMenu()">Мой профиль</a></li>
+                      <li><a routerLink="/settings" (click)="toggleMenu()">Настройки</a></li>
+                      <li class="dropdown-divider"></li>
+                      <li><a href="javascript:void(0)" (click)="logout(); toggleMenu()">Выйти</a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</header>

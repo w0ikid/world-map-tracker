@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from "./header/header.component";
-
+import { FooterComponent } from './footer/footer.component';
+import { ChatWidgetComponent } from './chat-widget/chat-widget.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, FormsModule, HttpClientModule, RouterModule, ChatWidgetComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

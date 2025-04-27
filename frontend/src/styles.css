@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0; /* Убедитесь, что margin тоже в глобальных стилях */
+    padding: 0; /* Убедитесь, что padding тоже в глобальных стилях */
+    box-sizing: border-box; /* Обычно применяется глобально или к * */
+    font-family: 'Montserrat', sans-serif;
+    /* Основной градиентный фон */
+    background: linear-gradient(135deg, #1c3b57, #2c5282);
+    color: #fff; /* Основной цвет текста */
+    line-height: 1.6;
+}
+
+/* Возможно, стоит переместить и этот глобальный стиль, если он нужен везде */
+ * {
+     box-sizing: border-box;
+ }

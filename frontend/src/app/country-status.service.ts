@@ -34,6 +34,10 @@ export class CountryStatusService {
     return this.http.get<{ visited_count: number }>(`${this.apiUrl}/visited-count`, { withCredentials: true });
   }
 
+  getWishlistCount(): Observable<{ wishlist_count: number }> {
+    return this.http.get<{ wishlist_count: number }>(`${this.apiUrl}/wish-list-count`, { withCredentials: true });
+  }
+
   setCountryStatus(countryISO: string, status: 'visited' | 'wishlist' | 'none'): Observable<any> {
     const body = { country_iso: countryISO, status };
     if (status === 'none') {
