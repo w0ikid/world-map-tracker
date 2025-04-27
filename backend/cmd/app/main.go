@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"log"
-
+    "os"
 	"github.com/joho/godotenv"
 	"github.com/w0ikid/world-map-tracker/internal/app"
 )
@@ -13,7 +13,8 @@ func main() {
     configFile := flag.String("config", "etc/secrets/.env", "Path to configuration file")
     
     flag.Parse()
-
+    namebd := os.Getenv("DBNamedb")
+    log.Println("DBNamedb:", namebd)
     // Try to load .env file, but don't fail if it doesn't exist (for Render deployment)
     _ = godotenv.Load(*configFile)
 
