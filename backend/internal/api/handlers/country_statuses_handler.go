@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/w0ikid/world-map-tracker/internal/domain/usecase"
 )
@@ -143,3 +142,55 @@ func (h *CountryStatusesHandler) GetVisitedCount(c *gin.Context) {
 		"visited_count": visitedCount,
 	})
 }
+
+func (h *CountryStatusesHandler) GetUsersWithSimilarList(c *gin.Context) {
+	userID, _ := c.Get("user_id") 
+	ctx := c.Request.Context()
+
+	users, err := h.usecase.FindUsersWithSimilarList(ctx, userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
+}
+
+func (h *CountryStatusesHandler) GetWishListCount(c *gin.Context) {
+	userID, _ := c.Get("user_id") 
+	ctx := c.Request.Context()
+	visitedCount, err := h.usecase.GetWishListCount(ctx, userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"wish_list_count": visitedCount,
+	})
+}
+
+func (h *CountryStatusesHandler) GetTopFiveVisitedCountries(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	topCountries, err := h.usecase.GetTopFiveVisitedCountries(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, topCountries)
+}
+
+func (h *CountryStatusesHandler) GetTopFiveWishlistCountries(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	topCountries, err := h.usecase.GetTopFiveWishlistCountries(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, topCountries)
+}
+

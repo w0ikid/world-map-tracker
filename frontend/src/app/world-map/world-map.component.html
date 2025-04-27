@@ -1,9 +1,23 @@
-<div #chartdiv style="width: 100%; height: 500px;"></div>
+<!-- Контейнер для карты -->
+<div class="map-container">
+  <div #chartdiv id="chartdiv"></div>
+</div>
 
-<!-- Пример модального окна (можно использовать Angular Material или другую библиотеку) -->
-<div *ngIf="selectedCountry" class="modal">
-  <h3>{{ selectedCountry }}</h3>
-  <button (click)="setStatus('visited')">Visited</button>
-  <button (click)="setStatus('wishlist')">Wishlist</button>
-  <button (click)="setStatus('none')">None</button>
+<!-- Фон модального окна -->
+<div *ngIf="selectedCountryISO" class="modal-backdrop" (click)="closeModal()"></div>
+
+<!-- Модальное окно -->
+<div *ngIf="selectedCountryISO" class="modal">
+  <button class="close-btn" (click)="closeModal()">×</button>
+  
+  <h3>{{ selectedCountryName }}</h3>
+  
+  <div [innerHTML]="countryInfo" class="country-info"></div>
+  
+  <div class="modal-buttons">
+    <button class="visited-btn" (click)="setStatus('visited')">Посещено</button>
+    <button class="wishlist-btn" (click)="setStatus('wishlist')">Хочу посетить</button>
+    <button class="none-btn" (click)="setStatus('none')">Убрать метку</button>
+    <button class="info-btn" (click)="onAskCountryInfo()">Информация о стране  AI</button>
+  </div>
 </div>

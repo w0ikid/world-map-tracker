@@ -1,0 +1,79 @@
+.statistics-container {
+    padding: 20px;
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+    }
+    
+    .error-message {
+      color: red;
+      padding: 15px;
+      text-align: center;
+      border: 1px solid red;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .statistics-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      
+      .statistics-section {
+        flex: 1;
+        min-width: 300px;
+        
+        h2 {
+          margin-bottom: 15px;
+          font-size: 1.5rem;
+          border-bottom: 2px solid #eee;
+          padding-bottom: 10px;
+        }
+        
+        .country-list {
+          list-style: none;
+          padding: 0;
+          
+          .country-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            
+            &:hover {
+              background-color: #69c754;
+            }
+            
+            .rank {
+              font-weight: bold;
+              margin-right: 15px;
+              min-width: 20px;
+            }
+            
+            .country-flag {
+              margin-right: 10px;
+              font-weight: bold;
+            }
+            
+            .country-name {
+              flex: 1;
+            }
+            
+            .visit-count {
+              font-weight: bold;
+              color: #f4f4f4;
+            }
+          }
+        }
+        
+        .no-data {
+          font-style: italic;
+          color: #999;
+          padding: 20px 0;
+          text-align: center;
+        }
+      }
+    }
+  }

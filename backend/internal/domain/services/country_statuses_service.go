@@ -12,6 +12,10 @@ type CountryStatusesServiceInterface interface {
 	UpdateCountryStatus(ctx context.Context, countryStatus *models.CountryStatus) (*models.CountryStatus, error)
 	DeleteCountryStatus(ctx context.Context, userID int, countryISO string) error
 	GetVisitedCount(ctx context.Context, userID int) (int, error)
+	FindUsersWithSimilarList(ctx context.Context, userID int) ([]*models.User, error)
+	GetWishListCount(ctx context.Context, userID int) (int, error)
+	GetTopFiveVisitedCountries(ctx context.Context) ([]*models.TopCountry, error)
+	GetTopFiveWishlistCountries(ctx context.Context) ([]*models.TopCountry, error)
 }
 
 type CountryStatusesService struct {
@@ -59,4 +63,36 @@ func (s *CountryStatusesService) GetVisitedCount(ctx context.Context, userID int
 		return 0, err
 	}
 	return visitedCount, nil
+}
+
+func (s *CountryStatusesService) FindUsersWithSimilarList(ctx context.Context, userID int) ([]*models.User, error) {
+	users, err := s.repo.FindUsersWithSimilarList(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func (s *CountryStatusesService) GetWishListCount(ctx context.Context, userID int) (int, error) {
+	wishListCount, err := s.repo.GetWishListCount(ctx, userID)
+	if err != nil {
+		return 0, err
+	}
+	return wishListCount, nil
+}
+
+func (s *CountryStatusesService) GetTopFiveVisitedCountries(ctx context.Context) ([]*models.TopCountry, error) {
+	topCountries, err := s.repo.GetTopFiveVisitedCountries(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return topCountries, nil
+}
+
+func (s *CountryStatusesService) GetTopFiveWishlistCountries(ctx context.Context) ([]*models.TopCountry, error) {
+	topCountries, err := s.repo.GetTopFiveWishlistCountries(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return topCountries, nil
 }

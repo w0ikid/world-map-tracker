@@ -1,0 +1,25 @@
+
+<div class="accecc" *ngIf="isLoggedIn">
+<!-- Кнопка открытия чата -->
+<div class="chat-button" (click)="toggleChat()" *ngIf="!isChatOpen">
+    💬
+  </div>
+  
+  <!-- Окно чата -->
+  <div class="chat-window" *ngIf="isChatOpen">
+    <div class="chat-header">
+      <span>Чат с ботом</span>
+      <button (click)="toggleChat()">✖</button>
+    </div>
+    
+    <div class="chat-messages">
+        <div *ngFor="let message of messages" [ngClass]="{'message-user': message.role === 'Пользователь', 'message-bot': message.role === 'Бот'}">
+          <b>{{message.role}}:</b> {{message.text}}
+        </div>
+      </div>
+      
+  
+    <input [(ngModel)]="userInput" (keydown.enter)="sendMessage()" placeholder="Введите сообщение..." />
+    <button (click)="sendMessage()">Отправить</button>
+  </div>
+</div>

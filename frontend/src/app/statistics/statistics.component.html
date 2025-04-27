@@ -1,0 +1,41 @@
+<div class="statistics-container">
+    <div *ngIf="isLoading" class="loading">
+      Loading statistics...
+    </div>
+    
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!isLoading && !error" class="statistics-content">
+      <div class="statistics-section">
+        <h2>Top 5 Most Visited Countries</h2>
+        <ul class="country-list">
+          <li *ngFor="let country of topVisitedCountries; let i = index" class="country-item">
+            <span class="rank">{{ i + 1 }}</span>
+            <span class="country-flag">{{ country.country_iso }}</span>
+            <span class="country-name">{{ country.country_name }}</span>
+            <span class="visit-count">{{ country.visit_count }} visits</span>
+          </li>
+        </ul>
+        <div *ngIf="topVisitedCountries.length === 0" class="no-data">
+          No data available
+        </div>
+      </div>
+  
+      <div class="statistics-section">
+        <h2>Top 5 Wishlist Countries</h2>
+        <ul class="country-list">
+          <li *ngFor="let country of topWishlistCountries; let i = index" class="country-item">
+            <span class="rank">{{ i + 1 }}</span>
+            <span class="country-flag">{{ country.country_iso }}</span>
+            <span class="country-name">{{ country.country_name }}</span>
+            <span class="visit-count">{{ country.visit_count }} wishes</span>
+          </li>
+        </ul>
+        <div *ngIf="topWishlistCountries.length === 0" class="no-data">
+          No data available
+        </div>
+      </div>
+    </div>
+  </div>

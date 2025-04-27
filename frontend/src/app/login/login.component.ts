@@ -7,9 +7,8 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule,RouterLink ],
+  imports: [FormsModule, CommonModule, RouterLink],
   standalone: true,
-  // 
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -22,7 +21,10 @@ export class LoginComponent {
 
   onLogin() {
     this.auth.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/profile']),
+      next: () => {
+        this.auth.checkLoginStatus();
+        this.router.navigate(['/profile']);
+      },
       error: err => this.error = 'Неверные данные'
     });
   }
