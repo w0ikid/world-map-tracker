@@ -23,7 +23,7 @@ export class LoginComponent {
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
         this.auth.checkLoginStatus();
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/worldmap']);
       },
       error: err => this.error = 'Неверные данные'
     });
