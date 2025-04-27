@@ -32,7 +32,7 @@ func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusesU
 
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4200", "https://world-map-tracker-nine.vercel.app/"}, // адрес фронта
+		AllowOrigins:     []string{"http://localhost:4200", "https://world-map-tracker-nine.vercel.app/", "world-map-tracker-danials-projects-21a4de1e.vercel.app"}, // адрес фронта
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
