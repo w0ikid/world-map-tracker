@@ -10,8 +10,7 @@
 - **Backend**: Golang + Gin
 - **База данных**: PostgreSQL
 - **Аутентификация**: Cookie-сессии
-- **AI-помощник**: Groq AI API (GET API)[https://console.groq.com/home] 
-
+- **AI-помощник**: Groq AI API (GET API)[https://console.groq.com/home] Очень быстрый и бесплатный 
 
 ---
 
@@ -94,7 +93,7 @@ npm install
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:1488' // адрес бекенда
+  apiUrl: 'http://localhost:1488' // адрес бекенда <---- тут исправьте {порт}
 };
 ```
 
@@ -103,6 +102,19 @@ export const environment = {
 ```bash
 ng serve
 ```
+
+**Помните что в CORS у меня указан несколько адресов**
+**Если вы хотите перейти на другой адрес то **
+
+```bash
+AllowOrigins:     []string{
+			"http://localhost:4200",
+			"https://world-map-tracker-nine.vercel.app",
+			"https://world-map-tracker-nine.vercel.app/",
+      },
+```
+
+backend/internal/app/start/http.go <- тут 
 
 Фронтенд будет доступен на:  
 👉 `http://localhost:4200`
