@@ -11,12 +11,19 @@
       <nav class="desktop-menu">
           <ul>
               <li><a routerLink="/worldmap" routerLinkActive="active">Карта</a></li>
-              <!-- <li><a routerLink="/locations" routerLinkActive="active">Локации</a></li> -->
-              <li><a routerLink="/trips" routerLinkActive="active">Путешествия</a></li>
+              <!-- <li><a routerLink="/trips" routerLinkActive="active">Путешествия</a></li> -->
               <li><a routerLink="/statistics" routerLinkActive="active">Статистика</a></li>
-              <li><a routerLink="/contacts" routerLinkActive="active">Контакты</a></li>
           </ul>
       </nav>
+
+    <div class="user-search" *ngIf="isLoggedIn">
+        <input
+          type="text"
+          [(ngModel)]="searchUsername"
+          (keyup.enter)="navigateToUser()"
+          placeholder="Найти пользователя..." >
+        <button (click)="navigateToUser()">Перейти</button>
+    </div>
 
       <div class="auth-area">
           <div class="auth-buttons" *ngIf="!isLoggedIn">
@@ -42,14 +49,21 @@
       <div class="mobile-menu" [class.active]="isMenuOpen">
           <button class="close-menu-btn" (click)="toggleMenu()">✕</button>
           <nav>
-              <ul>
-                  <li><a routerLink="/worldmap" routerLinkActive="active" (click)="toggleMenu()">Карта</a></li>
-                  <li><a routerLink="/locations" routerLinkActive="active" (click)="toggleMenu()">Локации</a></li>
-                  <li><a routerLink="/trips" routerLinkActive="active" (click)="toggleMenu()">Путешествия</a></li>
-                  <li><a routerLink="/statistics" routerLinkActive="active" (click)="toggleMenu()">Статистика</a></li>
-              </ul>
+            <ul>
+                <li><a routerLink="/worldmap" routerLinkActive="active">Карта</a></li>
+                <li><a routerLink="/trips" routerLinkActive="active">Путешествия</a></li>
+                <li><a routerLink="/statistics" routerLinkActive="active">Статистика</a></li>
+            </ul>
           </nav>
-           <div class="auth-buttons mobile-auth-buttons" *ngIf="!isLoggedIn">
+          <div class="user-search mobile-user-search" *ngIf="isLoggedIn">
+            <input
+              type="text"
+              [(ngModel)]="searchUsername"
+              (keyup.enter)="navigateToUser(); toggleMenu()"
+              placeholder="Найти пользователя..." >
+            <button (click)="navigateToUser(); toggleMenu()">Перейти</button>
+        </div> 
+          <div class="auth-buttons mobile-auth-buttons" *ngIf="!isLoggedIn">
               <a routerLink="/login" class="auth-btn login-btn" (click)="toggleMenu()">Войти</a>
               <a routerLink="/register" class="auth-btn register-btn" (click)="toggleMenu()">Регистрация</a>
           </div>

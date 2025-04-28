@@ -8,11 +8,13 @@ import (
 
 type CountryStatusesHandler struct {
 	usecase usecase.CountryStatusesUseCaseInterface
+	user usecase.UserUseCaseInterface
 }
 
-func NewCountryStatusesHandler(usecase usecase.CountryStatusesUseCaseInterface) *CountryStatusesHandler {
+func NewCountryStatusesHandler(usecase usecase.CountryStatusesUseCaseInterface, user usecase.UserUseCaseInterface) *CountryStatusesHandler {
 	return &CountryStatusesHandler{
 		usecase: usecase,
+		user: user,
 	}
 }
 
@@ -113,6 +115,26 @@ func (h *CountryStatusesHandler) DeleteCountryStatus(c *gin.Context) {
 	c.JSON(http.StatusNoContent, nil)
 }
 
+func (h *CountryStatusesHandler) GetVisitedPercentageUsername(c *gin.Context){
+	username := c.Param("username")
+
+	user, err := h.user.GetUserByUsername(c.Request.Context(), username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	visitedPercantage, err := h.usecase.GetVisitedPercentage(c.Request.Context(), user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"visited_percentage": visitedPercantage,
+	})
+}
+
 func (h *CountryStatusesHandler) GetVisitedPercentage(c *gin.Context) {
 	userID, _ := c.Get("user_id") 
 	ctx := c.Request.Context()
@@ -125,6 +147,26 @@ func (h *CountryStatusesHandler) GetVisitedPercentage(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"visited_percentage": visitedCount,
+	})
+}
+
+func (h *CountryStatusesHandler) GetVisitedCountUsername(c *gin.Context){
+	username := c.Param("username")
+
+	user, err := h.user.GetUserByUsername(c.Request.Context(), username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	visitedCount, err := h.usecase.GetVisitedCount(c.Request.Context(), user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"visited_count": visitedCount,
 	})
 }
 
@@ -143,30 +185,37 @@ func (h *CountryStatusesHandler) GetVisitedCount(c *gin.Context) {
 	})
 }
 
-func (h *CountryStatusesHandler) GetUsersWithSimilarList(c *gin.Context) {
-	userID, _ := c.Get("user_id") 
-	ctx := c.Request.Context()
-
-	users, err := h.usecase.FindUsersWithSimilarList(ctx, userID.(int))
+func (h *CountryStatusesHandler) GetWishListCountUsername(c *gin.Context){
+	username := c.Param("username")
+	user, err := h.user.GetUserByUsername(c.Request.Context(), username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
-}
-
-func (h *CountryStatusesHandler) GetWishListCount(c *gin.Context) {
-	userID, _ := c.Get("user_id") 
-	ctx := c.Request.Context()
-	visitedCount, err := h.usecase.GetWishListCount(ctx, userID.(int))
+	wishListCount, err := h.usecase.GetWishListCount(c.Request.Context(), user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"wish_list_count": visitedCount,
+		"wish_list_count": wishListCount,
+	})
+}
+
+
+func (h *CountryStatusesHandler) GetWishListCount(c *gin.Context) {
+	userID, _ := c.Get("user_id") 
+	ctx := c.Request.Context()
+	wishListCount, err := h.usecase.GetWishListCount(ctx, userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"wish_list_count": wishListCount,
 	})
 }
 
@@ -182,6 +231,8 @@ func (h *CountryStatusesHandler) GetTopFiveVisitedCountries(c *gin.Context) {
 	c.JSON(http.StatusOK, topCountries)
 }
 
+
+
 func (h *CountryStatusesHandler) GetTopFiveWishlistCountries(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -194,3 +245,16 @@ func (h *CountryStatusesHandler) GetTopFiveWishlistCountries(c *gin.Context) {
 	c.JSON(http.StatusOK, topCountries)
 }
 
+
+func (h *CountryStatusesHandler) GetUsersWithSimilarList(c *gin.Context) {
+	userID, _ := c.Get("user_id") 
+	ctx := c.Request.Context()
+
+	users, err := h.usecase.FindUsersWithSimilarList(ctx, userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
+}

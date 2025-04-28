@@ -1,0 +1,61 @@
+<div class="profile-container">
+    <div class="profile-header">
+      <h2>Travel Profile</h2>
+    </div>
+    
+    <!-- Avatar with user initial -->
+    <div class="profile-avatar" *ngIf="profileData">
+      <div class="profile-avatar-initial">
+        {{ profileData.username.charAt(0).toUpperCase() }}
+      </div>
+    </div>
+    
+    <div class="profile-info">
+      <h3>Account Information</h3>
+      
+      <div class="info-row" *ngIf="profileData">
+        <div class="info-label">Username</div>
+        <div class="info-value">{{ profileData.username }}</div>
+      </div>
+      
+      <div class="info-row" *ngIf="profileData">
+        <div class="info-label">Email</div>
+        <div class="info-value">{{ profileData.email }}</div>
+      </div>
+      
+      <div class="info-row" *ngIf="profileData">
+        <div class="info-label">Member since</div>
+        <div class="info-value">{{ profileData.created_at | date:'longDate' }}</div>
+      </div>
+      
+      <h3>Travel Statistics</h3>
+      
+      <div class="stats-container">
+        <div class="stat-box">
+          <h4>World Explored</h4>
+          <p class="stat-value">{{ visitedPercentage }}%</p>
+          <div class="progress-container">
+            <div class="progress-bar" [style.width.%]="visitedPercentage"></div>
+          </div>
+          <p class="stat-label">of countries visited</p>
+        </div>
+        
+        <div class="stat-box">
+          <h4>Countries Visited</h4>
+          <p class="stat-value">{{ visitedCount }}</p>
+          <p class="stat-label">out of 249 countries</p>
+        </div>
+        
+        <div class="stat-box">
+          <h4>Travel Status</h4>
+          <p class="stat-value">
+            {{ visitedPercentage < 10 ? 'Beginner' : 
+               visitedPercentage < 25 ? 'Explorer' : 
+               visitedPercentage < 50 ? 'Adventurer' : 
+               visitedPercentage < 75 ? 'Globetrotter' : 'World Master' }}
+          </p>
+          <p class="stat-label">based on your travels</p>
+        </div>
+      </div>
+    </div>
+  </div>

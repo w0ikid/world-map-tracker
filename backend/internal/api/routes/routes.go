@@ -12,7 +12,7 @@ import (
 
 func SetupRoutes(router *gin.Engine, cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusUseCase *usecase.CountryStatusesUseCase) {
 	userHandler := handlers.NewUserHandler(userUseCase)
-	countryStatus := handlers.NewCountryStatusesHandler(countryStatusUseCase)
+	countryStatus := handlers.NewCountryStatusesHandler(countryStatusUseCase, userUseCase)
 
 	authMiddleware := middlewares.AuthMiddleware()
 
@@ -44,6 +44,14 @@ func SetupRoutes(router *gin.Engine, cfg *config.Config, userUseCase *usecase.Us
 			countries.GET("/visited-percentage", countryStatus.GetVisitedPercentage)
 			countries.GET("/visited-count", countryStatus.GetVisitedCount)
 			countries.GET("/wish-list-count", countryStatus.GetWishListCount)
+
+
+			// хардкодим, потому мало времени на реализацию
+
+			countries.GET("/visited-percentage/:username", countryStatus.GetVisitedPercentageUsername)
+			countries.GET("/visited-count/:username", countryStatus.GetVisitedCountUsername)
+			countries.GET("/wish-list-count/:username", countryStatus.GetWishListCountUsername)
+
 		}
 		groq := api.Group("/ai")
 		groq.Use(authMiddleware)

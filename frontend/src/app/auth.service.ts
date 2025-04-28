@@ -31,6 +31,10 @@ export class AuthService {
     return this.http.get<UserProfile>(`${this.apiUrl}/users/profile`, { withCredentials: true });
   }
 
+  getUserByUsername(username: string): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/users/${username}`, { withCredentials: true });
+  }
+
   logout(): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
   }
