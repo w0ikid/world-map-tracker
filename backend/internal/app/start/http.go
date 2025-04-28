@@ -25,7 +25,7 @@ func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusesU
 		Path:     "/",
 		// Domain:   "world-map-tracker.onrender.com",
 		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
+		SameSite: http.SameSiteNoneMode,
 		Secure:   true, // Set to true since you're using HTTPS
 		MaxAge:  3600, // 1 hourg
 	})
