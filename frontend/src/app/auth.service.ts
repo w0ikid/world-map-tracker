@@ -14,6 +14,7 @@ export interface UserProfile {
 })
 export class AuthService {
   private apiUrl = environment.apiUrl;
+  // private apiUrl = 'http://localhost:1488/api';
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   private userDataSubject = new BehaviorSubject<UserProfile | null>(null);
   constructor(private http: HttpClient) {}

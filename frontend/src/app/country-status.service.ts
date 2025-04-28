@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 })
 export class CountryStatusService {
   private apiUrl = environment.apiUrl;
-
+  // private apiUrl = 'http://localhost:1488/api';
   constructor(private http: HttpClient) {}
 
   getCountryStatuses(): Observable<Record<string, 'visited' | 'wishlist'>> {

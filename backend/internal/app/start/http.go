@@ -20,10 +20,10 @@ import (
 func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusesUseCase *usecase.CountryStatusesUseCase) {
 	router := gin.Default()
 
-	store := cookie.NewStore([]byte("a-more-complex-secret-key"))
+	store := cookie.NewStore([]byte("secret"))
 	store.Options(sessions.Options{
 		Path:     "/",
-		Domain:   "world-map-tracker.onrender.com", // Add your domain
+		// Domain:   "world-map-tracker.onrender.com", // Add your domain
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true, // Set to true since you're using HTTPS

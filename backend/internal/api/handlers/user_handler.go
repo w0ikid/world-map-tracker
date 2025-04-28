@@ -1,11 +1,12 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/w0ikid/world-map-tracker/internal/domain/usecase"
-	"github.com/gin-contrib/sessions"
 )
 
 type UserHandler struct {
@@ -70,8 +71,8 @@ func (h *UserHandler) LoginUser(c *gin.Context) {
 
 	session := sessions.Default(c)
 	session.Set("user_id", user.ID)
-	session.Save()
-
+	err = session.Save()
+	log.Println(err)
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "login successful",
 	})
