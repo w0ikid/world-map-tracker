@@ -163,4 +163,27 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.root?.dispose();
   }
+
+  randomSelectCountry(): void {
+    if (!this.polygonSeries) {
+      console.error('Map not initialized yet');
+      return;
+    }
+    
+    const polygons = this.polygonSeries.mapPolygons.values;
+    if (polygons && polygons.length > 0) {
+      const randomIndex = Math.floor(Math.random() * polygons.length);
+      const randomPolygon = polygons[randomIndex];
+      
+      if (randomPolygon && randomPolygon.dataItem) {
+        const dataContext = randomPolygon.dataItem.dataContext as any;
+        if (dataContext && dataContext.id && dataContext.name) {
+          this.selectedCountryISO = dataContext.id;
+          this.selectedCountryName = dataContext.name;
+          this.countryClicked.emit(dataContext.id);
+          this.countryInfo = '';
+        }
+      }
+    }
+  }
 }

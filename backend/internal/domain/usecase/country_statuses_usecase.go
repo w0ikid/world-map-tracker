@@ -82,7 +82,7 @@ func (u *CountryStatusesUseCase) GetVisitedPercentage(ctx context.Context, userI
 	if err != nil {
 		return 0, err
 	}
-	var totalCountries = 195
+	var totalCountries = 249
 	percentage := (visitedCount * 100) / totalCountries
 	return percentage, nil
 }

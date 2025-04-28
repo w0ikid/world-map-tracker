@@ -38,6 +38,21 @@ export class CountryStatusService {
     return this.http.get<{ wishlist_count: number }>(`${this.apiUrl}/countries/wish-list-count`, { withCredentials: true });
   }
 
+
+  // Извините за путаницу, но это не нужно :> / Быстрая реализация треубует харкодинга
+
+  getVisitedPercentageByUsername(username: string): Observable<{ visited_percentage: number }> {
+    return this.http.get<{ visited_percentage: number }>(`${this.apiUrl}/countries/visited-percentage/${username}`, { withCredentials: true });
+  }
+  
+  getVisitedCountByUsername(username: string): Observable<{ visited_count: number }> {
+    return this.http.get<{ visited_count: number }>(`${this.apiUrl}/countries/visited-count/${username}`, { withCredentials: true });
+  }
+  
+  getWishlistCountByUsername(username: string): Observable<{ wishlist_count: number }> {
+    return this.http.get<{ wishlist_count: number }>(`${this.apiUrl}/countries/wish-list-count/${username}`, { withCredentials: true });
+  }
+
   setCountryStatus(countryISO: string, status: 'visited' | 'wishlist' | 'none'): Observable<any> {
     const body = { country_iso: countryISO, status };
     if (status === 'none') {

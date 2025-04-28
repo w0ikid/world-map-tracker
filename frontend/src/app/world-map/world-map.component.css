@@ -195,3 +195,26 @@
     font-size: 15px;
   }
 }
+
+.random-country-btn {
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  padding: 10px 15px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s;
+}
+
+.random-country-btn:hover {
+  background-color: #2980b9;
+}
+
+.random-country-btn:active {
+  transform: translateY(1px);
+}

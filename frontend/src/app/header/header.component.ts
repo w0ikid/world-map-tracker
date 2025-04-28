@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -13,6 +14,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
   userData: any = null;
   isMenuOpen: boolean = false;
+  searchUsername = '';
   constructor(
     private authService: AuthService,
     private router: Router
@@ -42,6 +44,20 @@ export class HeaderComponent implements OnInit {
         console.error('Ошибка при выходе из системы:', error);
       }
     });
+  }
+
+  navigateToUser(): void {
+    const username = this.searchUsername.trim();
+
+    if (!username) {
+      console.warn('Поиск пользователя: поле пустое.');
+      return;
+    }
+
+    this.router.navigate(['/user', username]);
+
+    this.searchUsername = '';
+    this.toggleMenu();
   }
 
   toggleMenu(): void {
