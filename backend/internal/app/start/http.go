@@ -23,7 +23,7 @@ func HTTP(cfg *config.Config, userUseCase *usecase.UserUseCase, countryStatusesU
 	store := cookie.NewStore([]byte("secret"))
 	store.Options(sessions.Options{
 		Path:     "/",
-		// Domain:   "world-map-tracker.onrender.com", // Add your domain
+		// Domain:   "world-map-tracker.onrender.com",
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true, // Set to true since you're using HTTPS
